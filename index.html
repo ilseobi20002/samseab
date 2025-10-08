@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Basic Cube</title>
+    <style>
+        /* 요구사항: body 마진 제거 및 캔버스 블록 표시 */
+        body {
+            margin: 0;
+            overflow: hidden; /* 스크롤바 방지 */
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+
+    <!-- 1. ES Module Shims 로드 -->
+    <!-- 브라우저가 import map을 지원하지 않을 경우 폴리필 역할을 합니다. -->
+    <script async src="https://unpkg.com/es-module-shims@1.10.0/dist/es-module-shims.js"></script>
+
+    <!-- 2. Import Map 정의 (Three.js CDN 경로 지정) -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+    <!-- 3. main.js 파일을 모듈로 로드 -->
+    <script type="module" src="./main.js"></script>
+</body>
+</html>
