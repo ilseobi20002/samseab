@@ -8,8 +8,11 @@ import {
     Mesh
 } from 'three';
 
+// OrbitControls를 addons 경로에서 가져옵니다.
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
 // 1. 기본 설정
-let scene, camera, renderer, cube;
+let scene, camera, renderer, cube, controls;
 
 function init() {
     // 장면 (Scene) 설정
@@ -46,7 +49,17 @@ function init() {
     // 큐브를 볼 수 있도록 카메라를 Z축으로 5만큼 이동
     camera.position.z = 5;
 
-    // 4. 리사이즈 이벤트 리스너 추가
+    // 4. OrbitControls 설정
+    // 카메라와 렌더러의 DOM 요소를 연결하여 OrbitControls 생성
+    controls = new OrbitControls(camera, renderer.domElement);
+    
+    // 컨트롤 옵션 설정
+    controls.enableDamping = true; // 부드러운 감속 효과 활성화
+    controls.dampingFactor = 0.05; // 감속 계수 (낮을수록 부드러움)
+    controls.minDistance = 2; // 최소 줌 거리
+    controls.maxDistance = 10; // 최대 줌 거리
+
+    // 5. 리사이즈 이벤트 리스너 추가
     window.addEventListener('resize', onWindowResize, false);
 }
 
@@ -60,14 +73,13 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-// 5. 애니메이션 루프 구현
+// 6. 애니메이션 루프 구현
 function animate() {
     // 브라우저의 다음 프레임에서 animate 함수를 다시 호출하도록 예약
     requestAnimationFrame(animate);
 
-    // 큐브 회전 로직 (x축과 y축으로 0.01씩 회전)
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
+    // OrbitControls 업데이트 (enableDamping이 true일 때 필요)
+    controls.update();
 
     // 장면을 카메라를 통해 렌더링
     renderer.render(scene, camera);
