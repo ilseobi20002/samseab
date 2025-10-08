@@ -1,12 +1,21 @@
 {
-  "name": "threejs-basic-cube-app",
+  "name": "water-molecule-3d-webapp",
   "version": "1.0.0",
-  "description": "A basic Three.js cube animation application using ES Modules and ready for GitHub Pages deployment.",
+  "description": "Interactive 3D water molecule (H2O) structure visualization with educational content using Three.js",
   "main": "main.js",
   "scripts": {
     "start": "npx live-server .",
     "deploy": "gh-pages -d ."
   },
+  "keywords": [
+    "threejs",
+    "water-molecule",
+    "chemistry",
+    "3d-visualization",
+    "education"
+  ],
+  "author": "",
+  "license": "MIT",
   "devDependencies": {
     "live-server": "^1.2.2",
     "gh-pages": "^6.1.1"

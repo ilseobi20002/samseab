@@ -3,23 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Three.js Basic Cube</title>
+    <title>물분자(H₂O) 구조</title>
     <style>
-        /* 요구사항: body 마진 제거 및 캔버스 블록 표시 */
-        body {
+        * {
             margin: 0;
-            overflow: hidden; /* 스크롤바 방지 */
+            padding: 0;
+            box-sizing: border-box;
         }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding: 20px;
+            gap: 20px;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        .canvas-container {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+        
         canvas {
             display: block;
         }
+        
+        .info-panel {
+            flex: 0 0 400px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+        
+        .info-panel h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .info-section {
+            margin-bottom: 25px;
+        }
+        
+        .info-section h3 {
+            color: #764ba2;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        
+        .info-section p {
+            color: #333;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+        
+        .info-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .info-section li {
+            color: #555;
+            line-height: 1.8;
+            padding-left: 25px;
+            position: relative;
+            margin-bottom: 8px;
+        }
+        
+        .info-section li:before {
+            content: "●";
+            color: #667eea;
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+        }
+        
+        .chemical-formula {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+            color: #856404;
+        }
+        
+        @media (max-width: 1024px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            .info-panel {
+                flex: 0 0 auto;
+                max-height: 300px;
+            }
+        }
     </style>
-
-    <!-- 1. ES Module Shims 로드 -->
-    <!-- 브라우저가 import map을 지원하지 않을 경우 폴리필 역할을 합니다. -->
+    
+    <!-- ES Module Shims 로드 -->
     <script async src="https://unpkg.com/es-module-shims@1.10.0/dist/es-module-shims.js"></script>
 
-    <!-- 2. Import Map 정의 (Three.js CDN 경로 지정) -->
+    <!-- Import Map 정의 (Three.js CDN 경로 지정) -->
     <script type="importmap">
         {
             "imports": {
@@ -30,7 +169,67 @@
     </script>
 </head>
 <body>
-    <!-- 3. main.js 파일을 모듈로 로드 -->
+    <div class="container">
+        <header>
+            <h1>물분자 (H₂O) 구조</h1>
+            <p>3D 모델로 배우는 화학의 기초</p>
+        </header>
+        
+        <div class="content">
+            <div class="canvas-container" id="canvas-container">
+                <!-- Three.js 캔버스가 여기에 추가됩니다 -->
+            </div>
+            
+            <div class="info-panel">
+                <h2>물분자란?</h2>
+                
+                <div class="chemical-formula">
+                    H₂O
+                </div>
+                
+                <div class="info-section">
+                    <h3>구성 원소</h3>
+                    <ul>
+                        <li><span class="highlight">수소(H)</span> 원자 2개 - 흰색 구</li>
+                        <li><span class="highlight">산소(O)</span> 원자 1개 - 빨간색 구</li>
+                    </ul>
+                </div>
+                
+                <div class="info-section">
+                    <h3>분자 구조 특징</h3>
+                    <p>물분자는 <span class="highlight">굽은 형태(bent shape)</span>를 가지고 있습니다.</p>
+                    <ul>
+                        <li>결합각: 약 <span class="highlight">104.5°</span></li>
+                        <li>극성 분자: 산소가 전자를 더 끌어당김</li>
+                        <li>수소 결합 형성 가능</li>
+                    </ul>
+                </div>
+                
+                <div class="info-section">
+                    <h3>물의 특성</h3>
+                    <ul>
+                        <li>높은 비열 - 온도 변화에 강함</li>
+                        <li>높은 표면장력</li>
+                        <li>얼면 부피가 증가 (밀도 감소)</li>
+                        <li>우수한 용매 - "만능 용매"</li>
+                    </ul>
+                </div>
+                
+                <div class="info-section">
+                    <h3>생명체와 물</h3>
+                    <p>물은 모든 생명체에 필수적입니다. 인체의 약 <span class="highlight">60-70%</span>가 물로 구성되어 있으며, 생화학 반응의 매개체 역할을 합니다.</p>
+                </div>
+                
+                <div class="info-section">
+                    <p style="font-size: 0.9rem; color: #888; margin-top: 20px;">
+                        💡 <strong>팁:</strong> 마우스로 드래그하여 분자를 회전시키고, 휠을 사용하여 확대/축소할 수 있습니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- main.js 파일을 모듈로 로드 -->
     <script type="module" src="./main.js"></script>
 </body>
 </html>
